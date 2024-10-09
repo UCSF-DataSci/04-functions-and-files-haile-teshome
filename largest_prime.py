@@ -11,4 +11,38 @@ Write a program that takes a number as an argument, finds the *Fibonacci* number
 Task: Find the largest prime Fibonacci number less that 50000
 """
 
-# You're on your own for this one. Good luck!
+#Example use of the script: python largest_prime.py 50000        
+import os
+import sys
+import argparse
+from math import isqrt
+from fibonnaci import fib_sequence  # Import the Fibonacci function
+
+
+# Prime checking function
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, isqrt(n) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def main():
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description="Find the largest prime Fibonacci number below a given limit.")
+    parser.add_argument('limit', type=int, help="Upper limit for Fibonacci sequence generation")
+    args = parser.parse_args()
+
+    # Generate Fibonacci sequence 
+    fib_numbers = fib_sequence(args.limit)
+
+    # Filter prime numbers from Fibonacci sequence
+    prime_fibs = [num for num in fib_numbers if is_prime(num)]
+    if prime_fibs:
+        print(f"The largest prime Fibonacci number below {args.limit} is {max(prime_fibs)}")
+    else:
+        print(f"No prime Fibonacci numbers found below {args.limit}")
+
+if __name__ == "__main__":
+    main()
